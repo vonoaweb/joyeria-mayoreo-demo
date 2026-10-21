@@ -3,32 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Certificado de pieza · Demo de Vonoa</title>
+<title>Certificado de autenticidad · Demo de Vonoa</title>
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0E0C0A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Figtree:wght@400;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="estilo.css">
 <style>
-  body{padding-bottom:40px}
-  .hoja{max-width:460px;margin:24px auto;background:#fff;border:1px solid var(--linea);border-radius:20px;padding:24px;position:relative;overflow:hidden}
-  .hoja::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:linear-gradient(90deg,var(--oro),#E2C78C,var(--oro))}
-  .sello{display:inline-flex;align-items:center;gap:8px;background:#E6F2EB;color:var(--verde);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.86rem;margin:6px 0 14px}
-  .sello svg{width:16px;height:16px;fill:var(--verde)}
-  .hoja h1{font-size:2.3rem;margin:.1em 0 .4em}
-  .hoja dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0}
-  .hoja dt{color:var(--gris)}
-  .hoja dd{margin:0;font-family:var(--mono);font-size:.9rem}
-  .que{margin:20px 0 0;padding-top:16px;border-top:1px solid var(--linea);color:var(--gris);font-size:.9rem}
+  body{padding-bottom:60px}
+  .hoja{position:relative;max-width:460px;margin:34px auto 26px;background:#F3ECDF;color:#1B1712;padding:12px}
+  .hoja::before{content:"";position:absolute;inset:6px;border:1px solid var(--oro-oscuro);pointer-events:none}
+  .hoja>*:not(.cert-foto){margin-left:18px;margin-right:18px}
+  .hoja .spec{color:var(--oro-oscuro);text-align:center;letter-spacing:.3em}
+  .sello{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;margin-bottom:14px;color:#3F5A3A;font-size:.64rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
+  .sello svg{width:15px;height:15px;fill:currentColor}
+  .hoja h1{font-weight:400;font-size:2.3rem;line-height:1.1;text-align:center;margin:8px 18px 20px;color:#1B1712}
+  .hoja dl{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin-bottom:22px;font-size:.9rem;border-top:1px solid rgba(143,115,67,.35);padding-top:18px}
+  .hoja dt{color:#6E6354;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;padding-top:.3em}
+  .hoja dd{margin:0}
+  .que{margin-top:0;margin-bottom:18px;padding-top:16px;border-top:1px solid rgba(143,115,67,.35);color:#6E6354;font-size:.86rem}
+  .volver{text-align:center}
 </style>
 </head>
 <body>
-<div class="aviso">Demo de <b>Vonoa</b> · pieza de ejemplo</div>
+<div class="aviso">Demo de Vonoa · pieza y foto de ejemplo</div>
 <div class="wrap">
-  <article class="hoja" id="hoja">
-    <p class="spec">Certificado de pieza</p>
-  </article>
-  <p style="text-align:center"><a class="btn-sec" href="./">Ver el catálogo de la demo</a></p>
+  <article class="hoja" id="hoja"></article>
+  <p class="volver"><a class="enlace" href="./">Ver el catálogo de la demo</a></p>
 </div>
 <script src="piezas.js"></script>
 <script>
@@ -37,12 +39,13 @@
     const id = new URLSearchParams(location.search).get("p");
     const p = D.piezas.find((x) => x.id === id);
     const h = document.getElementById("hoja");
-    if (!p) { h.insertAdjacentHTML("beforeend", "<h1>Folio no encontrado</h1><p>Revise el código que escaneó.</p>"); return; }
+    if (!p) { h.insertAdjacentHTML("beforeend", "<h1>Folio no encontrado</h1><p class='que'>Revise el código que escaneó.</p>"); return; }
     const m = D.metales[p.metal];
     h.insertAdjacentHTML("beforeend", `
-      <img class="cert-foto" src="fotos/${p.id}.jpg" alt="${p.nombre} (foto de ejemplo)" width="420" height="262">
-      <div class="sello"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Pieza registrada por el taller</div>
+      <img class="cert-foto" src="fotos/${p.id}.jpg" alt="${p.nombre} (foto de ejemplo)" width="420" height="262" style="margin:0 0 20px;width:100%">
+      <p class="spec">Certificado de autenticidad</p>
       <h1>${p.nombre}</h1>
+      <div class="sello"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Pieza registrada por el taller</div>
       <dl>
         <dt>Folio</dt><dd>VN-${p.id}</dd>
         <dt>Metal</dt><dd>${m.nombre}</dd>

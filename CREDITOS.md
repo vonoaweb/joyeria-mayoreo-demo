@@ -6,6 +6,7 @@ versión real del catálogo van las fotos de la joyería.
 
 | Pieza del demo | Foto en Pexels |
 |---|---|
+| Portada (aretes con diamante sobre terciopelo negro) | https://www.pexels.com/photo/35961143/ |
 | AR-018 Arracada lisa | https://www.pexels.com/photo/12194348/ |
 | BR-004 Broquel bolita | https://www.pexels.com/photo/17368722/ |
 | CA-050 Cadena de eslabón | https://www.pexels.com/photo/12155925/ |

@@ -1,4 +1,5 @@
 (function () {
+  document.documentElement.classList.add("js");
   const D = window.DEMO;
   const $ = (s) => document.querySelector(s);
   const mxn = (n) => n.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
@@ -18,7 +19,8 @@
 
   // ---- cotización visible para el cliente ----
   function pintarCotiz() {
-    const hora = estado.publicado ? "Publicado " + estado.publicado : "Precios de ejemplo";
+    const hora = estado.publicado ? "Publicado " + estado.publicado : "Precios del " + fechaHoy();
+    $("#hoy-fecha").textContent = hora;
     $("#cotiz").innerHTML = ["10k", "14k", "925"].map((m) =>
       `<li><span class="spec">${D.metales[m].nombre}</span><span class="v">${mxn(estado.precios[m])}</span><span class="f">por gramo</span></li>`
     ).join("");
@@ -46,6 +48,20 @@
           </div>
         </div></li>`;
     }).join("");
+    revelar();
+  }
+
+  // aparición suave de cada pieza al entrar en pantalla; si algo falla, se muestran todas
+  function revelar() {
+    const cards = [...document.querySelectorAll(".pieza:not(.vista)")];
+    const mostrar = (el) => el.classList.add("vista");
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) { setTimeout(() => mostrar(e.target), (cards.indexOf(e.target) % 4) * 90); io.unobserve(e.target); }
+      }), { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
+      cards.forEach((c) => io.observe(c));
+    } else cards.forEach(mostrar);
+    setTimeout(() => cards.forEach((c) => { const r = c.getBoundingClientRect(); if (r.top < innerHeight) mostrar(c); }), 1800);
   }
 
   function pintarBarra() {
@@ -94,7 +110,7 @@
     const url = new URL("c.html?p=" + encodeURIComponent(p.id), location.href).href;
     $("#cert-abrir").href = url;
     const q = $("#qr"); q.innerHTML = "";
-    if (window.QRCode) new QRCode(q, { text: url, width: 224, height: 224, colorDark: "#1C1A17", colorLight: "#ffffff" });
+    if (window.QRCode) new QRCode(q, { text: url, width: 224, height: 224, colorDark: "#1B1712", colorLight: "#F3ECDF" });
     else q.textContent = "QR";
     $("#cert").showModal();
   }
