@@ -1,5 +1,5 @@
 (function () {
-  const D = window.DEMO, F = window.FORMAS;
+  const D = window.DEMO;
   const $ = (s) => document.querySelector(s);
   const mxn = (n) => n.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
   const fechaHoy = () => new Date().toLocaleDateString("es-MX", { day: "numeric", month: "long" });
@@ -29,10 +29,9 @@
   function pintarGrid() {
     const lista = D.piezas.filter((p) => filtro === "todos" || p.metal === filtro);
     $("#grid").innerHTML = lista.map((p) => {
-      const tono = D.metales[p.metal].tono;
       const c = pedido[p.id] || 0;
       return `<li class="pieza${c ? " en-pedido" : ""}" data-id="${p.id}">
-        <div class="foto"><svg viewBox="0 0 120 120" class="${tono}" aria-hidden="true">${F[p.forma]}</svg></div>
+        <div class="foto"><img src="fotos/${p.id}.jpg" alt="${p.nombre}, ${D.metales[p.metal].nombre} (foto de ejemplo)" width="400" height="400" loading="lazy" decoding="async"></div>
         <div class="info">
           <h3>${p.nombre}</h3>
           <div class="meta">${D.metales[p.metal].nombre} · ${p.peso.toFixed(1)} g · ${p.id}</div>
@@ -83,6 +82,8 @@
   function abrirCert(p) {
     const m = D.metales[p.metal];
     $("#cert-titulo").textContent = p.nombre;
+    $("#cert-foto").src = "fotos/" + p.id + ".jpg";
+    $("#cert-foto").alt = p.nombre + " (foto de ejemplo)";
     $("#cert-datos").innerHTML = `
       <dt>Folio</dt><dd>VN-${p.id}</dd>
       <dt>Metal</dt><dd>${m.nombre}</dd>
